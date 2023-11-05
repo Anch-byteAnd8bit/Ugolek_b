@@ -46,21 +46,29 @@ app.UseSession();
 
 
 //app.MapGet("/coals/{id}", (int id) => CoalDB.GetCoal(id));
-app.MapGet("/coals", () => CoalDB.GetCoals());
+
 //app.MapPost("/coals", (Coal coal) => CoalDB.CreateCoal(coal));
 //app.MapPut("/coals", (Coal coal) => CoalDB.UpdateCoal(coal));
 //app.MapDelete("/coals/{id}", (int id) => CoalDB.RemoveCoal(id));
-
-app.MapPost("/address", (string city, string street, string house, HttpContext context) => CustomerDB.AddAddress(city, street, house, context));
-
-app.MapPut("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) => CustomerDB.AddEmail(email, emailSender, code, context));
-
 //app.MapGet("/customers", () => CustomerDB.GetCustomer());
-
-app.MapPost("/customers/verification", (string code, HttpContext context)=> CustomerDB.CompareCode(code, context));
-
 //// "ѕытаемс€" отправить email.
 //app.MapGet("/customers/email{message}", (string email, string message, IEmailSender emailSender) => emailSender.SendEmailAsync(email, message));
+
+app.MapGet("/coals", () => CoalDB.GetCoals()); //получить угли
+
+app.MapPost("/address", (string city, string street, string house, HttpContext context) 
+    => CustomerDB.AddAddress(city, street, house, context)); //ввести адрес
+
+app.MapPost("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) 
+    => CustomerDB.AddEmail(email, emailSender, code, context)); //ввод емейл в первый раз
+
+app.MapPost("/customers/verif", (string email, IEmailSender emailSender, ICode code)
+    => CustomerDB.EnterEmail(email, emailSender, code)); //ввод емейл в другие разы
+
+app.MapPost("/customers/verification", (string code, HttpContext context)
+    => CustomerDB.CompareCode(code, context)); //проверка введенного кода
+
+
 
 app.Run();
 

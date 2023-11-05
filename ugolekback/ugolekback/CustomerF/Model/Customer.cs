@@ -2,6 +2,7 @@
 using System.ComponentModel.DataAnnotations;
 using ugolekback.CoalF.Model;
 using ugolekback.EmailF;
+using ugolekback.OrderF;
 
 namespace ugolekback.CustomerF.Model
 {
@@ -15,7 +16,7 @@ namespace ugolekback.CustomerF.Model
         public required string House { get; set; }
         public string Code { get; set; } 
         //public bool IsRegistered { get; set; } = false;
-        //public List<Order> Orders { get; set; }
+        public List<Order> Orders { get; set; }
     }
 
 
@@ -38,6 +39,8 @@ namespace ugolekback.CustomerF.Model
             return customer;
         }
 
+
+        //регистрация
         public static void AddEmail(string email, IEmailSender emailSender, ICode code, HttpContext context)
         {
             int? idC = context.Session.GetInt32("_id");
@@ -64,6 +67,27 @@ namespace ugolekback.CustomerF.Model
             }
            
         }
+
+
+        //вход
+        public static void EnterEmail(string email, IEmailSender emailSender, ICode code)
+        {
+            
+                Customer? customer = _customers.SingleOrDefault(customer => customer.Email == email);
+                // Нашли пользователя по ID.
+                if (customer != null)
+                {
+                    // Отправляем ему письмо с кодом подтверждения.
+                    string emailcode = code.GetCode();
+                    emailSender.SendEmailAsync(email, emailcode);
+                    customer.Code = emailcode;
+                }
+            
+        }
+
+
+
+
 
         public static string CompareCode(string code, HttpContext context)
         {
