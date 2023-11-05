@@ -11,13 +11,12 @@ namespace ugolekback.OrderF
         public Order Order { get; set; }
     }
 
-    //public class OrderItemDB
-    //{
-    //    private static List<OrderItem> _orderitems = new List<OrderItem>()
-    //    {
-    //        new OrderItem{ Id=1, Name="ДМСШ 0-25", Price = 150000, Supplier="Кемуглесбыт" },
-    //        new OrderItem{ Id=2, Name="ДО 25-50", Price = 210000, Supplier="СУЭК-Хакасия"},
-    //        new OrderItem{ Id=3, Name="TДПК 50-200", Price = 230000, Supplier="Разрез Изыхский"}
-    //    };
-    //}
+    public class OrderItemDB
+    {
+        //private static List<OrderItem> _orderitems = new List<OrderItem>()
+        //{
+        //    new OrderItem{ Id=1, Price = 150000, Weight=250, Coal coal },
+            
+        //};
+    }
 }

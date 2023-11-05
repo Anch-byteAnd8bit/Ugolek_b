@@ -17,7 +17,7 @@ namespace ugolekback.OrderF
     {
         //private static List<Order> _orders = new List<Order>()
         //{
-        //    new Order{ Id=1, OrderDate= DateTime.Now, OrderPrice = 150000, Customer= _customers. },
+        //    new Order{ Id=1, OrderDate= DateTime.Now, OrderPrice = 150000, Customer= _customers[0] },
         //    new Order{ Id=2, OrderDate= DateTime.Now, OrderPrice = 210000, Supplier="СУЭК-Хакасия"},
         //    new Order{ Id=3, OrderDate= DateTime.Now, OrderPrice = 230000, Supplier="Разрез Изыхский"}
         //};

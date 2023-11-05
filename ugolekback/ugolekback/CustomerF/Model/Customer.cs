@@ -22,7 +22,7 @@ namespace ugolekback.CustomerF.Model
 
     public class CustomerDB
     {
-        private static List<Customer> _customers = new List<Customer>()
+        public static List<Customer> _customers = new List<Customer>()
         {
             new Customer{ Id=1, Email="sample1@foo.bar", City = "Абакан", Street="Кирова", House="120", Code="1234" },
             new Customer{ Id=2, Email="sample2@foo.bar", City = "Абаза", Street="Кирова", House="112", Code="4321"},
