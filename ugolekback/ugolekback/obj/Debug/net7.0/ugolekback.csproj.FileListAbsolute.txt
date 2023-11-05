@@ -64,3 +64,8 @@ D:\Ugol2023\ugolb\ugolekback\ugolekback\obj\Debug\net7.0\refint\ugolekback.dll
 D:\Ugol2023\ugolb\ugolekback\ugolekback\obj\Debug\net7.0\ugolekback.pdb
 D:\Ugol2023\ugolb\ugolekback\ugolekback\obj\Debug\net7.0\ugolekback.genruntimeconfig.cache
 D:\Ugol2023\ugolb\ugolekback\ugolekback\obj\Debug\net7.0\ref\ugolekback.dll
+D:\Ugol2023\ugolb\ugolekback\ugolekback\bin\Debug\net7.0\BouncyCastle.Cryptography.dll
+D:\Ugol2023\ugolb\ugolekback\ugolekback\bin\Debug\net7.0\MailKit.dll
+D:\Ugol2023\ugolb\ugolekback\ugolekback\bin\Debug\net7.0\MimeKit.dll
+D:\Ugol2023\ugolb\ugolekback\ugolekback\bin\Debug\net7.0\System.Security.Cryptography.Pkcs.dll
+D:\Ugol2023\ugolb\ugolekback\ugolekback\bin\Debug\net7.0\runtimes\win\lib\net7.0\System.Security.Cryptography.Pkcs.dll

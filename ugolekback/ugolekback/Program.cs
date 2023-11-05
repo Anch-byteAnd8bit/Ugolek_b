@@ -3,6 +3,7 @@ using Microsoft.OpenApi.Models;
 using ugolekback;
 using ugolekback.CoalF.Model;
 using ugolekback.CustomerF.Model;
+using ugolekback.EmailF;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -19,19 +20,16 @@ builder.Services.AddSwaggerGen(c =>
 
 builder.Services.AddDistributedMemoryCache();
 
-//builder.Services.AddSession(options =>
-//{
-//    options.IdleTimeout = TimeSpan.FromSeconds(10);
-//    options.Cookie.HttpOnly = true;
-//    options.Cookie.IsEssential = true;
-//});
-
 builder.Services.AddSession(options =>
 {
-    options.Cookie.Name = ".AdventureWorks.Session";
-    options.IdleTimeout = TimeSpan.FromSeconds(10);
+    options.Cookie.Name = "MySession";
+    options.IdleTimeout = TimeSpan.FromSeconds(2000);
     options.Cookie.IsEssential = true;
 });
+
+// Добавляем класс для отправки email
+builder.Services.AddScoped<IEmailSender, EmailSender>();
+builder.Services.AddScoped<ICode, Code>();
 
 var app = builder.Build();
 
@@ -48,17 +46,20 @@ app.UseSession();
 
 
 
-app.MapGet("/coals/{id}", CoalDB.GetCoal);    
-app.MapGet("/coals",  CoalDB.GetCoals);
+//app.MapGet("/coals/{id}", (int id) => CoalDB.GetCoal(id));
+app.MapGet("/coals", () => CoalDB.GetCoals());
 //app.MapPost("/coals", (Coal coal) => CoalDB.CreateCoal(coal));
 //app.MapPut("/coals", (Coal coal) => CoalDB.UpdateCoal(coal));
 //app.MapDelete("/coals/{id}", (int id) => CoalDB.RemoveCoal(id));
 
-app.MapPost("/address", (string city, string street, string house) => CustomerDB.AddAddress(city, street, house));
+app.MapPost("/address", (string city, string street, string house, HttpContext context) => CustomerDB.AddAddress(city, street, house, context));
 
-app.MapPut("/customers", (string email) => { CustomerDB.AddEmail(email); });
+app.MapPut("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) => CustomerDB.AddEmail(email, emailSender, code, context));
 
 app.MapGet("/customers", () => CustomerDB.GetCustomer());
+
+// "Пытаемся" отправить email.
+app.MapGet("/customers/email{message}", (string email, string message, IEmailSender emailSender) => emailSender.SendEmailAsync(email, message));
 
 app.Run();
 

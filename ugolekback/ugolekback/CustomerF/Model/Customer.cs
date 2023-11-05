@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.ComponentModel.DataAnnotations;
 using ugolekback.CoalF.Model;
+using ugolekback.EmailF;
 
 namespace ugolekback.CustomerF.Model
 {
@@ -27,28 +28,43 @@ namespace ugolekback.CustomerF.Model
             new Customer{ Id=3, Email="sample3@foo.bar", City = "Сорск", Street="Кирова", House="1", Code="3214"}
         };
 
-        public static async Task<Customer> AddAddress(string city, string street, string house)
+        public static async Task<Customer> AddAddress(string city, string street, string house, HttpContext context)
         {
             int idC = _customers.Last().Id + 1;
             Customer customer = new Customer { Id = idC, Email = "", City = city, Street = street, House = house, Code = "" };
             _customers.Add(customer);
-            // Задать куки
 
+            // Задать куки (переменную в  сессии) с ID пользователя.
+            context.Session.SetInt32("_id", idC);
 
             return customer;
         }
 
-        public static void AddEmail(string email)
+        public static void AddEmail(string email, IEmailSender emailSender, ICode code, HttpContext context)
         {
+            int? idC = context.Session.GetInt32("_id");
 
-            //_customers = _customers.Select(customer =>
-            //{
-            //    if (customer.Id == id)
-            //    {
-            //        customer.Email = email;
-            //    }
-            //    return customer;
-            //}).ToList();
+            // Нашли ID.
+            if (idC.HasValue)
+            {
+                Customer? customer = _customers.SingleOrDefault(customer => customer.Id == idC);
+                // Нашли пользователя по ID.
+                if (customer != null)
+                {
+                    // Сохраняем его адрес.
+                    customer.Email = email;
+                    // Отправляем ему письмо с кодом подтверждения.
+                    string emailcode = code.GetCode();
+                    emailSender.SendEmailAsync(email, emailcode);
+                    customer.Code = emailcode;
+                }
+            }
+            // Не нашли ID.
+            else
+            {
+                Console.WriteLine("Bad");
+            }
+           
         }
 
         public static List<Customer> GetCustomer()
