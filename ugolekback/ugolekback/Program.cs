@@ -48,8 +48,8 @@ app.UseSession();
 
 
 
-//app.MapGet("/coals/{id}", (int id) => CoalDB.GetCoal(id));
-app.MapGet("/coals", () => CoalDB.GetCoals());
+app.MapGet("/coals/{id}", CoalDB.GetCoal);    
+app.MapGet("/coals",  CoalDB.GetCoals);
 //app.MapPost("/coals", (Coal coal) => CoalDB.CreateCoal(coal));
 //app.MapPut("/coals", (Coal coal) => CoalDB.UpdateCoal(coal));
 //app.MapDelete("/coals/{id}", (int id) => CoalDB.RemoveCoal(id));
