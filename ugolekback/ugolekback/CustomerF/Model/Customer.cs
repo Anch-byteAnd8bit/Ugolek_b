@@ -14,7 +14,7 @@ namespace ugolekback.CustomerF.Model
         public required string Street { get; set; }
         public required string House { get; set; }
         public string Code { get; set; } 
-        public bool IsRegistered { get; set; } = false;
+        //public bool IsRegistered { get; set; } = false;
         //public List<Order> Orders { get; set; }
     }
 
@@ -33,8 +33,6 @@ namespace ugolekback.CustomerF.Model
             int idC = _customers.Last().Id + 1;
             Customer customer = new Customer { Id = idC, Email = "", City = city, Street = street, House = house, Code = "" };
             _customers.Add(customer);
-
-            // Задать куки (переменную в  сессии) с ID пользователя.
             context.Session.SetInt32("_id", idC);
 
             return customer;
@@ -66,6 +64,38 @@ namespace ugolekback.CustomerF.Model
             }
            
         }
+
+        public static string CompareCode(string code, HttpContext context)
+        {
+            string verif = "";
+            int? idC = context.Session.GetInt32("_id");
+            if (idC.HasValue)
+            {
+                Customer? customer = _customers.SingleOrDefault(customer => customer.Id == idC);
+                // Нашли пользователя по ID.
+                if (customer != null)
+                {
+                    if (customer.Code == code)
+                    {
+                        verif = "ok";
+                    }
+                    else
+                    {
+                        verif = "not";
+                    }
+                    
+                }
+
+            }
+            else
+            {
+                Console.WriteLine("Bad");
+            }
+            return verif;
+
+        }
+        
+
 
         public static List<Customer> GetCustomer()
         {

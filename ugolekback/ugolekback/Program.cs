@@ -10,7 +10,6 @@ var builder = WebApplication.CreateBuilder(args);
 // Add services to the container.
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
-//builder.Services.AddTransient<ModelsService>();
 
 
 builder.Services.AddSwaggerGen(c =>
@@ -56,10 +55,12 @@ app.MapPost("/address", (string city, string street, string house, HttpContext c
 
 app.MapPut("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) => CustomerDB.AddEmail(email, emailSender, code, context));
 
-app.MapGet("/customers", () => CustomerDB.GetCustomer());
+//app.MapGet("/customers", () => CustomerDB.GetCustomer());
 
-// "ѕытаемс€" отправить email.
-app.MapGet("/customers/email{message}", (string email, string message, IEmailSender emailSender) => emailSender.SendEmailAsync(email, message));
+app.MapPost("/customers/verification", (string code, HttpContext context)=> CustomerDB.CompareCode(code, context));
+
+//// "ѕытаемс€" отправить email.
+//app.MapGet("/customers/email{message}", (string email, string message, IEmailSender emailSender) => emailSender.SendEmailAsync(email, message));
 
 app.Run();
 
