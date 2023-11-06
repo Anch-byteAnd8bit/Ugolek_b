@@ -47,14 +47,6 @@ app.UseSession();
 
 
 
-//app.MapGet("/coals/{id}", (int id) => CoalDB.GetCoal(id));
-
-//app.MapPost("/coals", (Coal coal) => CoalDB.CreateCoal(coal));
-//app.MapPut("/coals", (Coal coal) => CoalDB.UpdateCoal(coal));
-//app.MapDelete("/coals/{id}", (int id) => CoalDB.RemoveCoal(id));
-//app.MapGet("/customers", () => CustomerDB.GetCustomer());
-//// "ѕытаемс€" отправить email.
-//app.MapGet("/customers/email{message}", (string email, string message, IEmailSender emailSender) => emailSender.SendEmailAsync(email, message));
 
 app.MapGet("/coals", () => CoalDB.GetCoals()); //получить угли
 
@@ -64,14 +56,18 @@ app.MapPost("/address", (string city, string street, string house, HttpContext c
 app.MapPost("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) 
     => CustomerDB.AddEmail(email, emailSender, code, context)); //ввод емейл в первый раз
 
-app.MapPost("/customers/verif", (string email, IEmailSender emailSender, ICode code, HttpContext context)
+app.MapPost("/customers/emailsecond", (string email, IEmailSender emailSender, ICode code, HttpContext context)
     => CustomerDB.EnterEmail(email, emailSender, code, context)); //ввод емейл в другие разы
 
 app.MapPost("/customers/verification", (string code, HttpContext context)
     => CustomerDB.CompareCode(code, context)); //проверка введенного кода
 
-app.MapPost("/orders", (List <OrderItem2> orders, HttpContext context)
+app.MapPost("/orders", (List <ItemTemp> orders, HttpContext context)
     => OrderDB.AddOrder(orders, context)); //ввод заказа
+
+app.MapGet("/customer/order", (HttpContext context) => OrderDB.GetCustomerOrders(context)); //получить заказы пользовател€
+
+
 
 
 app.Run();

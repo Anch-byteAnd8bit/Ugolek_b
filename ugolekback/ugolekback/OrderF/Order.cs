@@ -1,4 +1,5 @@
-﻿using ugolekback.CustomerF.Model;
+﻿using ugolekback.CoalF.Model;
+using ugolekback.CustomerF.Model;
 using ugolekback.EmailF;
 
 namespace ugolekback.OrderF
@@ -7,7 +8,7 @@ namespace ugolekback.OrderF
     {
         public int Id { get; set; }
         public DateTime OrderDate { get; set; }
-        public int OrderPrice { get; set; }
+        public decimal OrderPrice { get; set; }
         public required Customer Customer { get; set; }
 
         public required List<OrderItem> OrderItems { get; set; }
@@ -36,31 +37,91 @@ namespace ugolekback.OrderF
             }
         };
 
-        public static void AddOrder(List<OrderItem2> orders, HttpContext context)
+
+        //ввод заказа
+        public static void AddOrder(List<ItemTemp> orders, HttpContext context)
         {
             int? idC = context.Session.GetInt32("_id");
 
-            // Нашли ID.
-            //if (idC.HasValue)
-            //{
-            //    Customer? customer = _customers.SingleOrDefault(customer => customer.Id == idC);
-            //    // Нашли пользователя по ID.
-            //    if (customer != null)
-            //    {
-            //        // Сохраняем его адрес.
-            //        customer.Email = email;
-            //        // Отправляем ему письмо с кодом подтверждения.
-            //        string emailcode = code.GetCode();
-            //        emailSender.SendEmailAsync(email, emailcode);
-            //        customer.Code = emailcode;
-            //    }
-            //}
-            //// Не нашли ID.
-            //else
-            //{
-            //    Console.WriteLine("Bad");
-            //}
+            //Нашли ID.
+            if (idC.HasValue)
+            {
+                Customer? customer = CustomerDB._customers.SingleOrDefault(customer => customer.Id == idC);
+                // Нашли пользователя по ID.
+                if (customer != null)
+                {
+                    ///создаем заказ
+                    Order or = new Order
+                    {
+                        Id = OrderDB._orders.Last().Id + 1,
+                        OrderDate = DateTime.Now,
+                        OrderPrice = 0,
+                        Customer = customer,
+                        OrderItems = new List<OrderItem>() { }
 
+                    };
+                    foreach (var item in orders)
+                    {
+                        //создаем подзаказ
+                        OrderItem oi = new OrderItem
+                        {
+                            Id = OrderItemDB._orderitems.Last().Id + 1,
+                            // цена за тонну делить на 1000 кг умножить на кг
+                            Price = CoalDB._coals[item.Id].Price / 1000 * item.Weight,
+                            Weight = item.Weight,
+                            Coal = CoalDB._coals[item.Id]
+                        };
+
+                        OrderItemDB._orderitems.Add(oi);
+                        or.OrderItems.Add(oi);
+
+
+                    }
+                    foreach (var item in or.OrderItems)
+                    {
+                        or.OrderPrice += item.Price;
+                    }
+                    _orders.Add(or);
+                }
+            }
+            // Не нашли ID.
+            else
+            {
+                Console.WriteLine("Bad");
+            }
+
+
+
+        }
+
+        //получить заказы пользователя
+        public static List<Order> GetCustomerOrders(HttpContext context)
+        {
+            int? idC = context.Session.GetInt32("_id");
+            List<Order> _customerorder = new List<Order>() { };
+            //Нашли ID.
+            if (idC.HasValue)
+            {
+                Customer? customer = CustomerDB._customers.SingleOrDefault(customer => customer.Id == idC);
+                if (customer != null)
+                {
+                    foreach (var item in _orders)
+                    {
+                        if (item.Customer.Id == customer.Id)
+                        {
+                            _customerorder.Add(item);
+                        }
+                    }
+                }
+
+
+                return _customerorder;
+            }
+            else
+            {
+                Console.WriteLine("Bad");
+                return _customerorder;
+            }
         }
 
 

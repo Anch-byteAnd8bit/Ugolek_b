@@ -15,8 +15,7 @@ namespace ugolekback.CustomerF.Model
         public required string Street { get; set; }
         public required string House { get; set; }
         public string Code { get; set; } 
-        //public bool IsRegistered { get; set; } = false;
-        public List<Order> Orders { get; set; }
+        
     }
 
 
@@ -121,7 +120,7 @@ namespace ugolekback.CustomerF.Model
             return verif;
 
         }
-        
+
 
 
         public static List<Customer> GetCustomer()
@@ -129,33 +128,6 @@ namespace ugolekback.CustomerF.Model
             return _customers;
         }
 
-        //public static Customer? GetCoal(int id)
-        //{
-        //    return _coals.SingleOrDefault(coal => coal.Id == id);
-        //}
-
-        //public static Customer CreateCoal(Customer coal)
-        //{
-        //    _coals.Add(coal);
-        //    return coal;
-        //}
-
-        //public static Customer UpdateCoal(Customer update)
-        //{
-        //    _coals = _coals.Select(coal =>
-        //    {
-        //        if (coal.Id == update.Id)
-        //        {
-        //            coal.Name = update.Name;
-        //        }
-        //        return coal;
-        //    }).ToList();
-        //    return update;
-        //}
-
-        //public static void RemoveCustomer(int id)
-        //{
-        //    _coals = _coals.FindAll(coal => coal.Id != id).ToList();
-        //}
+       
     }
 }

@@ -5,21 +5,18 @@ namespace ugolekback.OrderF
     public record OrderItem
     {
         public int Id { get; set; }
-        public int Price { get; set; }
+        public decimal Price { get; set; }
         public int Weight { get; set; }
         public required Coal Coal { get; set; }
         //public Order Order { get; set; }
     }
-    public class OrderItem2
+    public class ItemTemp
     {
-        int Id { get; set; }
-        int Weight { get; set; }
+        public int Id { get; set; }
+        public int Weight { get; set; }
     }
-    public class OrderItem2DB
-    {
-
-    }
-
+    
+    
 
     public class OrderItemDB
     {
