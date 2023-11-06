@@ -65,7 +65,13 @@ app.MapPost("/customers/verification", (string code, HttpContext context)
 app.MapPost("/orders", (List <ItemTemp> orders, HttpContext context)
     => OrderDB.AddOrder(orders, context)); //ввод заказа
 
-app.MapGet("/customer/order", (HttpContext context) => OrderDB.GetCustomerOrders(context)); //получить заказы пользователя
+app.MapGet("/customer/order", (HttpContext context) 
+    => OrderDB.GetCustomerOrders(context)); //получить заказы пользователя
+
+
+
+
+
 
 
 

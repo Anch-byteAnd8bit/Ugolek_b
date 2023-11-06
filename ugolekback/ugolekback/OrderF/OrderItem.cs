@@ -1,4 +1,5 @@
 ﻿using ugolekback.CoalF.Model;
+using ugolekback.CustomerF.Model;
 
 namespace ugolekback.OrderF
 {
@@ -28,5 +29,12 @@ namespace ugolekback.OrderF
             new OrderItem{ Id=4, Price = 300000, Weight=1000, Coal = CoalDB._coals[0] }
 
         };
+
+
+        
     }
+
+
+
+    
 }
