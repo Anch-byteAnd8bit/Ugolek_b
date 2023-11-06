@@ -70,19 +70,22 @@ namespace ugolekback.CustomerF.Model
 
 
         //вход
-        public static void EnterEmail(string email, IEmailSender emailSender, ICode code)
+        public static void EnterEmail(string email, IEmailSender emailSender, ICode code, HttpContext context)
         {
+
+            Customer? customer = _customers.SingleOrDefault(customer => customer.Email == email);
+            // Нашли пользователя по ID.
+            if (customer != null)
+            {
+                // Отправляем ему письмо с кодом подтверждения.
+                string emailcode = code.GetCode();
+                emailSender.SendEmailAsync(email, emailcode);
+                customer.Code = emailcode;
+                int idC = customer.Id;
+                context.Session.SetInt32("_id", idC);
+            }
             
-                Customer? customer = _customers.SingleOrDefault(customer => customer.Email == email);
-                // Нашли пользователя по ID.
-                if (customer != null)
-                {
-                    // Отправляем ему письмо с кодом подтверждения.
-                    string emailcode = code.GetCode();
-                    emailSender.SendEmailAsync(email, emailcode);
-                    customer.Code = emailcode;
-                }
-            
+
         }
 
 

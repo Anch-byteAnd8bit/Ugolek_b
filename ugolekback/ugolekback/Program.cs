@@ -1,9 +1,11 @@
 using Microsoft.AspNetCore.Http.HttpResults;
+using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
 using ugolekback;
 using ugolekback.CoalF.Model;
 using ugolekback.CustomerF.Model;
 using ugolekback.EmailF;
+using ugolekback.OrderF;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -26,7 +28,7 @@ builder.Services.AddSession(options =>
     options.Cookie.IsEssential = true;
 });
 
-// Добавляем класс для отправки email
+// для отправки email
 builder.Services.AddScoped<IEmailSender, EmailSender>();
 builder.Services.AddScoped<ICode, Code>();
 
@@ -62,12 +64,14 @@ app.MapPost("/address", (string city, string street, string house, HttpContext c
 app.MapPost("/customers/email", (string email, IEmailSender emailSender, ICode code, HttpContext context) 
     => CustomerDB.AddEmail(email, emailSender, code, context)); //ввод емейл в первый раз
 
-app.MapPost("/customers/verif", (string email, IEmailSender emailSender, ICode code)
-    => CustomerDB.EnterEmail(email, emailSender, code)); //ввод емейл в другие разы
+app.MapPost("/customers/verif", (string email, IEmailSender emailSender, ICode code, HttpContext context)
+    => CustomerDB.EnterEmail(email, emailSender, code, context)); //ввод емейл в другие разы
 
 app.MapPost("/customers/verification", (string code, HttpContext context)
     => CustomerDB.CompareCode(code, context)); //проверка введенного кода
 
+app.MapPost("/orders", (List <OrderItem2> orders, HttpContext context)
+    => OrderDB.AddOrder(orders, context)); //ввод заказа
 
 
 app.Run();

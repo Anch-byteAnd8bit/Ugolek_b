@@ -11,7 +11,7 @@
 
     public class CoalDB
     {
-        private static List<Coal> _coals = new List<Coal>()
+        public static List<Coal> _coals = new List<Coal>()
         {
             new Coal{ Id=1, Name="ДМСШ 0-25", Price = 150000, Supplier="Кемуглесбыт" },
             new Coal{ Id=2, Name="ДО 25-50", Price = 210000, Supplier="СУЭК-Хакасия"},
