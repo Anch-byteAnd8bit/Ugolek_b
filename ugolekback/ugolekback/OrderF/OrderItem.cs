@@ -8,7 +8,7 @@ namespace ugolekback.OrderF
         public decimal Price { get; set; }
         public int Weight { get; set; }
         public required Coal Coal { get; set; }
-        //public Order Order { get; set; }
+        
     }
     public class ItemTemp
     {

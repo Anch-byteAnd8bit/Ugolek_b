@@ -15,9 +15,11 @@ namespace ugolekback.EmailF
 
         async Task IEmailSender.SendEmailAsync(string email, string message)
         {
+            
             string? passw;
-            using (StreamReader sr = new StreamReader("D:\\Ugol2023\\ugolb\\ugolekback\\ugolekback\\bin\\Debug\\net7.0\\Pass.txt"))
+            using (StreamReader sr = new StreamReader("..\\ugolekback\\Pass.txt"))
             {
+                
                 passw = sr.ReadLine();
             }
 
